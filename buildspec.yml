@@ -15,5 +15,7 @@ phases:
 
 artifacts:
   files:
-    - '**/*'
-  base-directory: dist
+    - appspec.yml
+    - scripts/**       # Include your lifecycle scripts
+    - dist/**          # Include built frontend files
+  discard-paths: no    # Keeps directory structure
