@@ -5,12 +5,15 @@ phases:
     runtime-versions:
       nodejs: 18
     commands:
-      - npm ci
+      - echo Installing dependencies...
+      - npm install
+
   build:
     commands:
+      - echo Building the Vite React app...
       - npm run build
 
 artifacts:
-  base-directory: dist
   files:
     - '**/*'
+  base-directory: dist
