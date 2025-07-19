@@ -3,13 +3,28 @@ os: linux
 files:
   - source: /
     destination: /var/www/react-vite
-
+permissions:
+  - object: /var/www/react-vite/scripts
+    pattern: "**"
+    owner: root
+    group: root
+    mode: 755
+    type:
+      - file
 hooks:
+  BeforeInstall:
+    - location: scripts/stop.sh
+      timeout: 300
+      runas: root
   AfterInstall:
     - location: scripts/install.sh
       timeout: 300
       runas: root
   ApplicationStart:
     - location: scripts/start.sh
+      timeout: 300
+      runas: root
+  ApplicationStop:
+    - location: scripts/stop.sh
       timeout: 300
       runas: root
