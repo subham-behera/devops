@@ -2,10 +2,14 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /var/www/html
+    destination: /var/www/react-vite
 
 hooks:
   AfterInstall:
-    - location: scripts/after_install.sh
-      timeout: 180
+    - location: scripts/install.sh
+      timeout: 300
+      runas: root
+  ApplicationStart:
+    - location: scripts/start.sh
+      timeout: 300
       runas: root
