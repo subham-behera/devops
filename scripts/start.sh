@@ -1,3 +1,11 @@
 #!/bin/bash
 cd /var/www/react-vite
-npm run preview -- --host 0.0.0.0 --port 80 &
+
+# Kill any existing processes
+pkill -f "serve"
+
+# Start the application using a static server
+npx serve -s dist -l 80 &
+
+# Or if you prefer using Python's simple server:
+# cd dist && python3 -m http.server 80 &
