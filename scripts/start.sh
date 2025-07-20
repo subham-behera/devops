@@ -1,11 +1,27 @@
 #!/bin/bash
-cd /var/www/react-vite
 
-# Kill any existing processes
-pkill -f "serve"
+echo "Starting React application..."
 
-# Start the application using a static server
-npx serve -s dist -l 80 &
+# Ensure proper permissions
+chown -R nginx:nginx /var/www/react-vite
+chmod -R 755 /var/www/react-vite
 
-# Or if you prefer using Python's simple server:
-# cd dist && python3 -m http.server 80 &
+# Start Nginx service
+systemctl start nginx
+systemctl enable nginx
+
+# Reload Nginx to pick up any configuration changes
+systemctl reload nginx
+
+# Check if Nginx is running
+if systemctl is-active --quiet nginx; then
+    echo "✅ Nginx started successfully"
+    echo "🌐 Application should be available at http://$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4)"
+else
+    echo "❌ Failed to start Nginx"
+    systemctl status nginx
+    exit 1
+fi
+
+# Display status
+systemctl status nginx --no-pager -l
