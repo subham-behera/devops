@@ -1,17 +1,29 @@
+# scripts/stop.sh
 #!/bin/bash
+set -e
 
-echo "Stopping React application..."
+echo "=== Stopping React application ==="
+
+# Function to log with timestamp
+log() {
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1"
+}
 
 # Stop Nginx gracefully
 if systemctl is-active --quiet nginx; then
-    echo "Stopping Nginx..."
-    systemctl stop nginx
-    echo "✅ Nginx stopped successfully"
+    log "Stopping Nginx..."
+    systemctl stop nginx || {
+        log "Failed to stop Nginx gracefully, forcing stop..."
+        systemctl kill nginx
+        sleep 2
+    }
+    log "✅ Nginx stopped successfully"
 else
-    echo "ℹ️  Nginx is not running"
+    log "ℹ️  Nginx is not running"
 fi
 
-# Optional: Clean up old files (uncomment if needed)
-# rm -rf /var/www/react-vite/*
+# Wait a moment for processes to fully stop
+sleep 2
 
-echo "Stop script completed"
+log "Stop script completed successfully"
+exit 0

@@ -1,3 +1,4 @@
+# appspec.yml
 version: 0.0
 os: linux
 files:
@@ -9,13 +10,12 @@ permissions:
     owner: nginx
     group: nginx
     mode: 644
-  - object: /var/www/react-vite/scripts
-    pattern: "**"
-    owner: root
-    group: root
+  - object: /var/www/react-vite
+    owner: nginx
+    group: nginx
     mode: 755
     type:
-      - file
+      - directory
 hooks:
   BeforeInstall:
     - location: scripts/stop.sh
